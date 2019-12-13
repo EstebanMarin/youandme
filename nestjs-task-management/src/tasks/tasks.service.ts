@@ -4,6 +4,7 @@ import { GetTaskFilterDto } from './dto/get-tasks.dto';
 import { TasksRepository } from './task.repository'
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
+import { TaskStatus } from './task-status.enum';
 
 @Injectable()
 export class TasksService {
@@ -34,13 +35,13 @@ export class TasksService {
     //     return tasks;
     // }
 
-        async getTaskById(id: number): Promise<Task> {
-            const found = await this.taskRepository.findOne(id);
-            if (!found){
-                throw new NotFoundException(`There is no task with id: ${id}`);
-            }
-            return found;
+    async getTaskById(id: number): Promise<Task> {
+        const found = await this.taskRepository.findOne(id);
+        if (!found){
+            throw new NotFoundException(`There is no task with id: ${id}`);
         }
+        return found;
+    }
 
     // getTaskById(id: string): Task {
     //     const found = this.tasks.find((task: Task) => task.id === id);
@@ -50,20 +51,13 @@ export class TasksService {
     //     return found;
     // }
 
-    // createTask(createTaskDto: CreateTaskDto): Task {
-    //     const {title, description} = createTaskDto;
-    //     const task: Task = {
-    //      //   id: uuid(),
-    //      // TODO: Uncomment the one on top and delete the on of the bottom
-    //         id: this.tasks.length.toString(),
-    //         title,
-    //         description,
-    //         status: TaskStatus.OPEN,
-    //     };
-    //     this.tasks.push(task);
-    //     return task;
-    // }
+    async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+        return this.taskRepository.createTask(createTaskDto)
+    }
 
+    async deleteTaskById(id: number){
+        
+    }
     // deleteTaskById(id: string): void {
     //     const found = this.getTaskById(id);
     //     this.tasks = this.tasks.filter(task => found.id !== task.id );
